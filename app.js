@@ -1,13 +1,17 @@
 const express=require('express')
 const cors=require('cors')
 const userRoutes=require('./backend/routes/user')
-
+const messageRoutes=require('./backend/routes/message')
 const app=express()
 const sequelize=require('./backend/util/database')
 const User=require('./backend/models/user')
+const Message=require('./backend/models/message')
 app.use(cors())
 app.use(express.json())
 app.use(userRoutes)
+app.use(messageRoutes)
+User.hasMany(Message)
+Message.belongsTo(User)
 app.use('/',(req,res)=>{
     console.log('working')
 })
