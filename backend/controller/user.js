@@ -2,7 +2,7 @@ const User=require('../models/user')
 const bcrypt=require('bcrypt')
 var jwt=require('jsonwebtoken')
 const saltRounds=10
-exports.createUser=(req,res)=>{
+const createUser=(req,response)=>{
     const name=req.body.name;
     const email=req.body.email;
     console.log(email)
@@ -22,7 +22,7 @@ exports.createUser=(req,res)=>{
                 password:hash
             }).then(res=>{
                 console.log(res)
-                res.json({
+                response.json({
                     name:req.body.name,
                     email:req.body.email,
                     message:'successfully logged in'
@@ -44,7 +44,7 @@ const loginUser=(req,res)=>{
             bcrypt.compare(pass,password).then(res=>{
                 if(res){
                     var token=jwt.sign({id:id},'95e27267d2d6fb35b686eea82069247091b17b903d98ec5ee2333bb64a956540c37389b8ca52505ead7af47de4d87f8b2d03ae8ee48214e059361542864fabc9')
-                    res.status(200).json({email:email,name:name,token:token,msg:"ligin successful"})
+                    res.status(200).json({email:email,name:name,token:token,msg:"login successful"})
                 }else{
                     res.status(401).json({msg:"login failed"})
                 }
@@ -58,4 +58,4 @@ const loginUser=(req,res)=>{
         console.log(err)
     })
 }
-module.exports=loginUser;
+module.exports={createUser,loginUser};

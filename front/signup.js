@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded',(e)=>{
+    e.preventDefault()
     const signup=document.getElementById('signup')
     signup.addEventListener('click',(e)=>{
     

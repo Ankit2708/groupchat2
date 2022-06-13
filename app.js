@@ -9,7 +9,7 @@ const Message=require('./backend/models/message')
 app.use(cors())
 app.use(express.json())
 app.use(userRoutes)
-app.use(messageRoutes)
+app.use('/',messageRoutes)
 User.hasMany(Message)
 Message.belongsTo(User)
 app.use('/',(req,res)=>{
