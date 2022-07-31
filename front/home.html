@@ -13,6 +13,12 @@
     <ul id="groups">
         <li>school friends</li>
         <li>college friends</li>
+        <button id="create-group">Create a group</button>
+        <li> <a href="./group.html"></a>></li>
+        <div class="admin">
+
+        </div>
+        <li><button id="logout">Logout</button></li>
     </ul>
     <h4>online users</h4>
     <ul id="messages_cont_ul">
@@ -21,10 +27,36 @@
         <li>you:hi there</li>
         <li>pranay:hey</li>
     </ul>
-    <div>
-        <input type="text" id="messageinput" placeholder="addmessage">
-        <button id="addmsgbtn">add</button>
+    
+    <div id="msgs">
+        <h2>Messages</h2>
     </div>
+    <div>
+        <ul id="message_cont_ul">
+            
+        </ul>
+    </div>
+    
+     <!-- <div id="add_message">
+        <input type="text" id="messageinput" placeholder="add message">
+        <button id="addmsgbtn">add</button> -->
+        <div>
+            <input type="text" placeholder="user email" id="addMembersinput">
+            <button id="addMembersBtn">add user</button>
+        </div>
+   
+    <div id="main">
+        <form id="addForm">
+            <input type="text" id="message" placeholder="Enter Message">
+            <button type="submit" class="send-btn">Send Message</button>
+        </form>
+        <h2 class="title">Messages</h2>
+        <hr>
+        <div id="message-container" class="list-group">
+
+        </div>
+    </div>
+    
     <script src="./home.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>

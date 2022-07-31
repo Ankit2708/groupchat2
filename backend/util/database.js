@@ -1,5 +1,5 @@
 const Sequelize=require('sequelize')
-const sequelize=new Sequelize('groupchat','root','2708@@1991As',{
+const sequelize=new Sequelize('groupchat2','root','2708@@1991As',{
     dialect:'mysql',
     host:'localhost'
 })

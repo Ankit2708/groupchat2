@@ -1,6 +1,6 @@
 const Sequelize=require('sequelize')
 const sequelize=require('../util/database')
-const Message=sequelize.define('message',{
+const Message=sequelize.define('messages',{
     id:{
         type:Sequelize.INTEGER,
         allowNull:false,
@@ -10,8 +10,14 @@ const Message=sequelize.define('message',{
     msg:{
         type:Sequelize.STRING
     },
-    username:{
+    // username:{
+    name:{
         type:Sequelize.STRING
+        // }
+        
+    },
+    gId:{
+        type:Sequelize.INTEGER
     }
 
 })

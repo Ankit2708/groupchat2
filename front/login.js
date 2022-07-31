@@ -13,11 +13,11 @@ formm.addEventListener('submit',(e)=>{
         email,
         password
     }
-    axios.post('http://localhost:3000/login',userDetails).then(response=>{
-    if(response.status===201){
+    axios.post('http://localhost:3000/user/login',userDetails).then(response=>{
+    if(response.status===200){
         alert(response.data.message)
-        localStorage.setItem("token",response.data.Accesstoken)
-        window.location.replace('./home.html')
+        localStorage.setItem("token",response.data.token)
+        window.location.replace('./group.html')
     }else{
         document.getElementById('password').value=""
     }

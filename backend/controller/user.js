@@ -1,8 +1,9 @@
 const User=require('../models/user')
 const bcrypt=require('bcrypt')
 var jwt=require('jsonwebtoken')
+const express = require('express')
 const saltRounds=10
-const createUser=(req,response)=>{
+exports.createUser=(req,response)=>{
     const name=req.body.name;
     const email=req.body.email;
     console.log(email)
@@ -31,31 +32,36 @@ const createUser=(req,response)=>{
         })
     }).catch(err=>console.log(err))
 }
-const loginUser=(req,res)=>{
-    const email=req.body.email;
-    const password=req.body.password;
-    User.findOne({where:{email}})
-    .then(user=>{
-        if(user){
-            const user=user.id
-            const email=user.email
-            const pass=user.password
-            const name=user.name
-            bcrypt.compare(pass,password).then(res=>{
-                if(res){
-                    var token=jwt.sign({id:id},'95e27267d2d6fb35b686eea82069247091b17b903d98ec5ee2333bb64a956540c37389b8ca52505ead7af47de4d87f8b2d03ae8ee48214e059361542864fabc9')
-                    res.status(200).json({email:email,name:name,token:token,msg:"login successful"})
-                }else{
-                    res.status(401).json({msg:"login failed"})
+exports.loginUser = (req,res)=>{
+    const {email,password} = req.body;
+    User.findAll({where:{email}})
+    .then(users=>{
+        if(users.length>0){
+            bcrypt.compare(password, users[0].password, function(err,response){
+                if(err){
+                    console.log(err)
+                    return res.status(400).json({message:"Something went wrong!!",success:false})
                 }
-            }).catch(err=>{
-                console.log(err)
+                if(response){
+                    const jwtToken = generateToken(users[0].id)
+                    return res.json({token:jwtToken,success:true,message:'Logged in Successfully'})
+                }else{
+                    return res.status(401).json({message:"Wrong password! Please enter correct password...!"})
+                }
             })
-        }else{
-            res.status(404).json({msg:"user not found"})
         }
-    }).catch(err=>{
-        console.log(err)
+        else{
+            return res.status(404).json({message:"User not found! Please signup",success:false,err});
+        }
+    })
+    .catch(err=>{
+        res.status(400).json({message:"User not found! Please signup",success:false,err});
     })
 }
-module.exports={createUser,loginUser};
+
+
+function generateToken(id){
+    console.log(id)
+    return jwt.sign(id, '95e27267d2d6fb35b686eea82069247091b17b903d98ec5ee2333bb64a956540c37389b8ca52505ead7af47de4d87f8b2d03ae8ee48214e059361542864fabc9')
+}
+
