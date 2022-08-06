@@ -1,5 +1,5 @@
 const token=localStorage.getItem('token')
-let grpId
+
 const addBtn=document.querySelector('#add-btn')
 const removeBtn=document.querySelector('#remove-btn')
 const adminBtn=document.querySelector('#admin-btn')
@@ -14,13 +14,15 @@ window.addEventListener('DOMContentLoaded',(e)=>{
     const url=window.location.href
     const grpId=url.split('grpId='[1])
 })
+const url=window.location.href
+const grpId=url.split('grpId=')[1]
 addBtn.addEventListener('click',(e)=>{
     e.preventDefault()
     if(addEmail.value==''){
         addEmail.placeholder='Please enter email'
         addEmail.classList.add('empty')
     }else{
-        axios.post('http://localhost:3000/addMember',{grpId:grpId,email:addEmail.value},{"Authorization":token})
+        axios.post('http://localhost:3000/addMember',{grpId:grpId,email:addEmail.value},{headers:{"Authorization":token}})
         .then(res=>{
             showPopupMessage('Member added successfully')
         }).catch(err=>{
@@ -34,9 +36,10 @@ removeBtn.addEventListener('click',(e)=>{
         removeEmail.placeholder='Please enter email'
         removeEmail.classList.add('empty')
     }else{
-        axios.post('http://localhost:3000/removeMember',{grpId:grpId,email:removeEmail.value},{"Authorization":token})
-        .then(res=>{
-            if(res.data.removeMember){
+        axios.post('http://localhost:3000/removeMember',{grpId:grpId,email:removeEmail.value},{headers:{"Authorization":token}})
+        .then(ress=>{
+            console.log(ress.data)
+            if(ress.data.removeMember){
                 showPopupMessage('Member removed successfully')
             }else{
                 showPopupMessage('Member not present in the group')
@@ -52,10 +55,10 @@ adminBtn.addEventListener('click',(e)=>{
         adminEmail.placeholder='Please enter email'
         adminEmail.classList.add('empty')
     }else{
-        axios.post('http://localhost:3000/makeAdmin',{grpId:grpId,email:adminEmail.value},{"Authorization":token})
-        then(res=>{
-            console.log(res.data)
-            if(res.data.adminMember[0]){
+        axios.post('http://localhost:3000/makeAdmin',{grpId:grpId,email:adminEmail.value},{headers:{"Authorization":token}})
+        .then(ress=>{
+            console.log(ress.data)
+            if(ress.data.adminMember[0]){
                 showPopupMessage('Member is admin now')
             }else{
                 showPopupMessage('Member not present in group add member first')
@@ -67,13 +70,13 @@ adminBtn.addEventListener('click',(e)=>{
 })
 removeAdminBtn.addEventListener('click',(e)=>{
     e.preventDefault()
-    if(removeAdminEmail.value=''){
+    if(removeAdminEmail.value===''){
         removeAdminEmail.placeholder='Please enter the email'
         removeAdminEmail.classList.add('empty')
     }else{
-        axios.post('http://localhost:3000/removeAdmin',{grpId:grpId,email:removeAdminEmail.value},{"Authorization":token})
-        .then(res=>{
-            if(res.data.adminMember[0]){
+        axios.post('http://localhost:3000/removeAdmin',{grpId:grpId,email:removeAdminEmail.value},{headers:{"Authorization":token}})
+        .then(ress=>{
+            if(ress.data.adminMember[0]){
                 showPopupMessage('member is removed from admin position')
             }else{
                 showPopupMessage('Member not present in group add member first')

@@ -4,13 +4,13 @@ const Message=require('../models/message')
 const Group=require('../models/group')
 const addMessage=(req,res)=>{
     const groupid=req.body.groupid
-    let message=req.body.message
+    let message=req.body.msg
     const user=req.user
     console.log(user)
     let username=req.user.name
     user.createMessage({
         msg:message,
-        username:username,
+        name:username,
         gId:groupid
     }).then(result=>{
         console.log(result)
@@ -52,8 +52,9 @@ const getMessage=async(req,res)=>{
     //     return res.json("user not allowed")
     // }
     let groupid=req.query.grpId
-    Message.findAll({where:{gId:groupid}})
+    await Message.findAll({where:{gId:groupid}})
     .then(msgs=>{
+        console.log(msgs)
         res.status(200).json({msgs})
     }).catch(err=>{
         console.log(err)

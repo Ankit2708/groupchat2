@@ -3,15 +3,16 @@ const Group=require('../models/group')
 const userGroup=require('../models/userGroup')
 const adminCheck=(req,res,next)=>{
     console.log(req.body.grpId)
+    console.log(req.user.id)
     userGroup.findOne({where:{
         userId:req.user.id,
         groupId:req.body.grpId
-    }}).then(result=>{
-        console.log(result)
-        if(result==null){
+    }}).then(ress=>{
+        console.log(ress)
+        if(ress===null){
             res.status(404).json({msg:'user not in group. Please add user'})
         }
-        if(!result.isAdmin){
+        if(!ress.isAdmin){
             res.status(401).json({msg:'You are not admin'})
         }
         else{
@@ -19,17 +20,17 @@ const adminCheck=(req,res,next)=>{
         }
     }).catch(err=>console.log(err))
 }
-const postAddMember=(req,res)=>{
+const postAddMember=async(req,res)=>{
     const addEmail=req.body.email
     const grpId= req.body.grpId
-    User.findOne({where:{email:addEmail}})
+    await User.findOne({where:{email:addEmail}})
     .then(addUser=>{
         if(addUser==null){
             res.status(404).json({msg:'user not found or invalid email id'})
         }else{
             let userId=addUser.id
             userGroup.create({
-                userID:userId,
+                userId:userId,
                 groupId:grpId
             }).then(newMember=>{
                 res.send({newMember})
@@ -43,13 +44,13 @@ const postAddMember=(req,res)=>{
     })
     
 }
-const postRemoveMember=(req,res)=>{
+const postRemoveMember=async(req,res)=>{
     const removeEmail=req.body.email
     const grpId=req.body.grpId
     User.findOne({where:{email:removeEmail}})
     .then(removeUser=>{
         if(removeUser==null){
-            res.status(404).json({msg:'user not found or invalid email id'})
+            return res.status(404).json({msg:'user not found or invalid email id'})
         }else{
             let userId=removeUser.id
             userGroup.destroy({where:{
@@ -74,13 +75,15 @@ const postMakeAdmin=(req,res)=>{
             res.status(404).json({msg:'user not found or invalid email id'})
         }else{
             let userId=addAdmin.id
+            //console.log(userId)
             userGroup.update({isAdmin:true},{
                 where:{
                     userId:userId,
                     groupId:grpId
                 }
             }).then(adminMember=>{
-                res.send({adminMember})
+                console.log(adminMember)
+                res.json({msg:'Member added successfully'})
             }).catch(err=>console.log(err))
         }
     }).catch(err=>console.log(err))
@@ -95,13 +98,14 @@ const postRemoveAdmin=(req,res)=>{
         }else if(adminUser.id==req.user.id){
             res.status(401).json({msg:'You cannot remove yourself from admin'})
         }else{
-            let userId=addAdmin.id
+            let userId=adminUser.id
             userGroup.update({isAdmin:false},{
                 where:{
                     userId:userId,
                     groupId:grpId
                 }
             }).then(adminMember=>{
+                console.log(adminMember)
                 res.send({adminMember})
             }).catch(err=>console.log(err))
         }

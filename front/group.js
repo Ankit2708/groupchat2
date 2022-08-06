@@ -67,25 +67,22 @@ logoutBtn.addEventListener('click',(e)=>{
     localStorage.clear()
     window.location.replace('./login.html')
 })
-const createGrpBtn=document.querySelector('.submit-btn')
-
-function onsubmitform(e){
-console.log('ok')
-
-    e.preventDefault()
-    const grpName=document.getElementById('group')
-    if(grpName.value=''){
+const createGrpBtn=document.getElementById('submit-btn')
+createGrpBtn.addEventListener('click',()=>{
+    const grpName=(document.getElementById('group')).value
+    if(grpName==''){
         grpName.placeholder='Please enter group name'
         grpName.classList.add('empty')
     }else{
-        console.log(grpName)
         axios.post('http://localhost:3000/creategroup',{
-            groupname:grpName.value,
+            groupname:grpName
         },{
             headers:{"Authorization":token}
         }).then(ress=>{
             console.log(ress)
         })
-
     }
-}
+})
+    
+
+    

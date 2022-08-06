@@ -1,6 +1,6 @@
 const Sequelize=require('sequelize')
 const sequelize=require('../util/database')
-const UserGroup=sequelize.define('userGroup',{
+const userGroup=sequelize.define('usergroups',{
     id:{
         type:Sequelize.INTEGER,
         allowNull:false,
@@ -12,4 +12,4 @@ const UserGroup=sequelize.define('userGroup',{
         defaultValue:false
     }
 });
-module.exports=UserGroup
+module.exports=userGroup
